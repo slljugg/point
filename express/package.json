@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "express": "^4.17.1",
+    "mkdirp": "^1.0.4",
+    "querystring": "^0.2.1"
+  }
+}

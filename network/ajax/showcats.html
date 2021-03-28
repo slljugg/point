@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 1px;
+    }
+    img {
+      height: 20px;
+      width: 30px;
+      float: left;
+    }
+  </style>
+</head>
+<body>
+  <button>showcats</button>
+  <div></div>
+</body>
+<script>
+  var btn = document.querySelector('button')
+  var div = document.querySelector('div')
+  function get (url,callback) {
+    var xhr = new XMLHttpRequest()
+    xhr.open('get', url)
+    xhr.addEventListener('load',e=> {
+      callback(xhr.responseText)
+    }) 
+    xhr.send()
+  }
+  // btn.addEventListener('click', e=> {
+  //   var xhr = new XMLHttpRequest()
+  //   xhr.open('get', 'https://xieranmaya.github.io/images/cats/cats.json')
+  //   xhr.addEventListener('load', e=> {
+  //     var ary = JSON.parse(xhr.responseText)
+  //     // console.log(xhr.responseText)
+  //     for( var imgObject of ary) {
+  //       var img = document.createElement('img')
+  //       img.src = 'https://xieranmaya.github.io/images/cats/' + imgObject.url
+  //       div.append(img)
+  //     }
+  //   })
+  //   xhr.send()
+  // })   未封装xhr写法
+
+
+  // btn.addEventListener('click', e=> {
+  //   get('https://xieranmaya.github.io/images/cats/cats.json',(data) =>{
+  //     var ary = JSON.parse(data)
+  //     // console.log(xhr.responseText)
+  //     for( var imgObject of ary) {
+  //       var img = document.createElement('img')
+  //       img.src = 'https://xieranmaya.github.io/images/cats/' + imgObject.url
+  //       div.append(img)
+  //     }
+  //   })
+  // })   封装xhr写法
+  
+  function getImage(url, callback) {
+    var img = document.createElement('img')
+    img.onload = function () {
+      callback(img)
+    }
+    img.src =url
+  }
+  var base = 'https://xieranmaya.github.io/images/cats'
+  btn.addEventListener('click', e=> {
+    get('https://xieranmaya.github.io/images/cats/cats.json', (data) =>{
+      var ary = JSON.parse(data).slice(0,10)
+      var i = 0
+      f()
+      function f() {
+        if (i < ary.length) {
+          getImage(`${base}/${ary[i++].url}`, (img)=> {
+          div.append(img)
+          f()
+          })
+        }
+      }
+    })
+  })
+</script>
+</html>
